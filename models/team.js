@@ -1,10 +1,10 @@
 var mongoose =require('mongoose');
 
 var teamSchema= new mongoose.Schema({
-  id_team: {type: Number, unique: true, required: true},
-  name: {type: String},
-  score: {type: Number}
+  name: {type: String, required: true},
+  stadium: { type: String, required: true},
+  points: { type: Number, required: true}
   
 },{timestamps:true});
 
-mongoose.model('team', teamSchema);
+module.exports = mongoose.model('team', teamSchema);

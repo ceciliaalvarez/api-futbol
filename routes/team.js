@@ -4,6 +4,21 @@ var Team = mongoose.model('team');
 
 var ObjectId = mongoose.Types.ObjectId;
 
+router.post('/', (req, res, next) => {
+    let name = req.body.name;
+    let stadium = req.body.stadium;   
+    let points = req.body.points;
+
+    var team = new Team({
+        name: name,
+        stadium: stadium,
+        points: points
+    });
+
+    team.save();
+    res.send("team had been posted \n" + team);
+});
+
 router.get('/', (req, res, next) => {
     Team.find({})
         .then(teams => {
@@ -11,46 +26,37 @@ router.get('/', (req, res, next) => {
             return res.json({ 'teams': teams })
         })
         .catch(next);
-    //res.send("get clients");
-    //next();
+        res.send("get teams");
+   
 });
 
+
 router.get('/:id', (req, res, next) => {
-    //let id =  new ObjectId(req.params.id);
-    let id_team = req.params.id_team;
-    Team.findById(id_team)
-        .populate('teams')
+    let id = req.params.id;
+    Team.findById(id)
         .then(team => {
             if (!team) { return res.sendStatus(401); }
             return res.json({ 'team': team })
         })
-        .catch(next);
-    //res.send("get client:" + id);
-    //next();
-});
-
-router.post('/', (req, res, next) => {
-    let id_team = req.body.id_team;
-    let name = req.body.name;
-    let scrore = req.body.scrore;
-    res.send("post team:" + id + " - name:" + name);
-    //next();
+      
+        res.send("get team" + id);
+          //.catch(next);
 });
 
 router.put('/:id', (req, res, next) => {
-    let id_team = req.body.id_team;
-    let name = req.body.name;
-    let scrore = req.body.scrore;
-    res.send("post team:" + id + " - name:" + name);
-    //next();
+    Team.findOneAndUpdate({ id: req.params.id }, req.body, { new: true }, function (err, team) {
+        if (err)
+            res.send(err);
+        res.json(team);
+    });
+    res.send("team updated");
+
 });
 
 router.delete('/:id', (req, res, next) => {
     let id = req.params.id;
-    User.findByIdAndRemove(id);
-    res.sendStatus(200);
-    //res.send("delete client:"+id);
-    //next();
+    Team.findByIdAndRemove(id);
+    res.status(200).send("delete client:" + id);
 });
 
 module.exports = router;

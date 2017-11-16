@@ -4,59 +4,69 @@ var Match = mongoose.model('match');
 
 var ObjectId = mongoose.Types.ObjectId;
 
+router.post('/', (req, res, next) => {
+    let date = req.body.date;
+    let stadium = req.body.stadium;
+    let finished = req.body.finished;
+    let team1 = req.body.team1;
+    let team2 = req.body.team2;
+    let events = req.body.events;
+    let score = req.body.score;
+
+    var match = new Match({
+        date: date,
+        stadium: stadium,
+        finished: finished,
+        team1: team1,
+        team2: team2,
+        events: events,
+        score: score,
+    });
+    match.save();
+    res.send("Match had been posted \n" + match);
+});
+
 router.get('/', (req, res, next) => {
     Match.find({})
-         .then(matches => {
+        .then(matches => {
             if (!matches) { return res.sendStatus(401); }
             return res.json({ 'matches': matches })
-            })
+        })
         .catch(next);
-    //res.send("get clients");
+    res.send("get matches");
     //next();
 });
 
 router.get('/:id', (req, res, next) => {
-    //let id =  new ObjectId(req.params.id);
     let id = req.params.id
     Match.findById(id)
-        .populate('matches')
         .then(match => {
             if (!match) { return res.sendStatus(401); }
-            return res.json({ 'matches': matches })
+            return res.json({ 'match': match })
         })
         .catch(next);
-    //res.send("get client:" + id);
-    //next();
+    res.send("get match:" + id);
+
 });
 
-router.post('/', (req, res, next) => {
-    let id_match = req.body.id_match;
-    let date = req.body.date;
-    let hour = req.body.hour;
-    let id_team1 = req.body.id_team1 ;
-    let id_team2 = req.body.id_team2;
-    let events = req.body.events;
-    res.send("post match:" + id_match + " - date:" + date);
-    //next();
-});
 
 router.put('/:id', (req, res, next) => {
-    let id_match = req.body.id_match;
-    let date = req.body.date;
-    let hour = req.body.hour;
-    let id_team1 = req.body.id_team1;
-    let id_team2 = req.body.id_team2;
-    let events = req.body.events;
-    res.send("post match:" + id_match + " - date:" + date);
-    //next();
+
+    Match.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, match) {
+        if (err)
+            res.send(err);
+        res.json(match);
+    });
+    res.send("put match:" + match);
+
 });
 
 router.delete('/:id', (req, res, next) => {
-    let id_match = req.params.id_match;
+    let id = req.params.id;
     Match.findByIdAndRemove(id);
-    res.sendStatus(200);
-    //res.send("delete match:"+id);
-    //next();
+    //res.sendStatus(200);
+    res.send("match deleted :" + id);
 });
+
 
 module.exports = router;

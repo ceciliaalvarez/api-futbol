@@ -1,9 +1,11 @@
 var mongoose =require('mongoose');
 
 var eventsSchema= new mongoose.Schema({
-  id_event: {type: String , unique: true, required: true},
-  description: {type: String, required: true},
-  name: {type: String, unique: true, required: true}
+  name: { type: String, unique: true, required: true },
+  description: {type: String},
+  time: {type: Number, required: true},
+  executor: {type: mongoose.Schema.Types.ObjectId, ref: 'team', required: true},
+  auxiliar: {type: mongoose.Schema.Types.ObjectId, ref: 'team'}
 },{timestamps:true});
 
-mongoose.model('event', eventsSchema);
+module.exports = mongoose.model('event', eventsSchema);
