@@ -13,12 +13,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
-mongoose.connect('mongodb://localhost:3000/', { useMongoClient: true });
+mongoose.connect('mongodb://localhost:27017/futbol');
 require('./models/team.js');
 require('./models/match.js');
 require('./models/event.js');
+require('./models/eventtype.js');
 
-app.use(require('./routes/index'));
+app.use(require('./routes'));
 
 var router=express.Router();
 

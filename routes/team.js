@@ -1,24 +1,27 @@
+//ABMC de equipos deportivos
+
 var mongoose = require('mongoose');
 var router = require('express').Router();
 var Team = mongoose.model('team');
 
-var ObjectId = mongoose.Types.ObjectId;
-
+//Crear equipo
 router.post('/', (req, res, next) => {
-    let name = req.body.name;
-    let stadium = req.body.stadium;   
-    let points = req.body.points;
+    let name1 = req.body.name;
+    let stadium1 = req.body.stadium;   
+    let points1 = req.body.points;
 
     var team = new Team({
-        name: name,
-        stadium: stadium,
-        points: points
+        name: name1,
+        stadium: stadium1,
+        points: points1,
     });
 
     team.save();
-    res.send("team had been posted \n" + team);
+    res.sendStatus(200);
+    //res.send("team had been posted \n" + team);
 });
 
+//Listar todos los equipos
 router.get('/', (req, res, next) => {
     Team.find({})
         .then(teams => {
@@ -30,7 +33,7 @@ router.get('/', (req, res, next) => {
    
 });
 
-
+//Listar un equipo
 router.get('/:id', (req, res, next) => {
     let id = req.params.id;
     Team.findById(id)
@@ -43,6 +46,7 @@ router.get('/:id', (req, res, next) => {
           //.catch(next);
 });
 
+//Modificar equipo
 router.put('/:id', (req, res, next) => {
     Team.findOneAndUpdate({ id: req.params.id }, req.body, { new: true }, function (err, team) {
         if (err)
@@ -53,6 +57,7 @@ router.put('/:id', (req, res, next) => {
 
 });
 
+//Eliminar equipo
 router.delete('/:id', (req, res, next) => {
     let id = req.params.id;
     Team.findByIdAndRemove(id);

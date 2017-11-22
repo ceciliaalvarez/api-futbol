@@ -1,9 +1,12 @@
+//???Informe de finalización de juego 
+
 var mongoose = require('mongoose');
 var router = require('express').Router();
 var Match = mongoose.model('match');
 
 var ObjectId = mongoose.Types.ObjectId;
 
+//Alta de juegos (partidos) indicando los id de los equipos y la fecha y hora de inicio.
 router.post('/', (req, res, next) => {
     let date = req.body.date;
     let stadium = req.body.stadium;
@@ -26,17 +29,34 @@ router.post('/', (req, res, next) => {
     res.send("Match had been posted \n" + match);
 });
 
-router.get('/', (req, res, next) => {
-    Match.find({})
-        .then(matches => {
-            if (!matches) { return res.sendStatus(401); }
-            return res.json({ 'matches': matches })
-        })
-        .catch(next);
-    res.send("get matches");
-    //next();
+//Consulta de juegos.
+//Consulta de juegos activos(no finalizados).
+router.get('/?finished', (req, res, next) => {
+    let fin = req.params.finished;
+    if(fin===null)
+    {
+        Match.find({})
+            .then(matches => {
+                if (!matches) { return res.sendStatus(401); }
+                return res.json({ 'matches': matches })
+            })
+            .catch(next);
+        res.send("get matches");
+    }
+    else
+    {
+        Match.find({ finished:false })
+            .then(matches => {
+                if (!matches) { return res.sendStatus(401); }
+                return res.json({ 'matches': matches })
+            })
+            .catch(next);
+        res.send("get active matches");
+    }
+    
 });
 
+//Consulta de detalle de un juego informando equipos y eventos
 router.get('/:id', (req, res, next) => {
     let id = req.params.id
     Match.findById(id)
@@ -61,6 +81,7 @@ router.put('/:id', (req, res, next) => {
 
 });
 
+//Baja de juego indicando el id del juego.
 router.delete('/:id', (req, res, next) => {
     let id = req.params.id;
     Match.findByIdAndRemove(id);

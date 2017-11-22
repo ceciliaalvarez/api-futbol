@@ -10,4 +10,4 @@ var matchSchema= new mongoose.Schema({
   score: { type: String, required: true}
 },{timestamps:true});
 
-module.exports = mongoose.model('match', matchSchema);
+mongoose.model('match', matchSchema);

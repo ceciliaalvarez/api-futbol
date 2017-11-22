@@ -1,33 +1,28 @@
-//Informar nuevo evento indicando juego y datos necesarios según el evento (i.e. tipo, equipo, hora, etc).
+//ABMC de tipo de eventos(goles, amonestaciones, cambios)
 
 var mongoose = require('mongoose');
 var router = require('express').Router();
-var Event = mongoose.model('event');
+var EventType = mongoose.model('eventtype');
 
 var ObjectId = mongoose.Types.ObjectId;
 
-//Crear un evento de un partido
+//Crear un evento
 router.post('/', (req, res, next) => {
-    let type = req.body.type;
-    let description = req.body.description;
-    let time = req.body.time;
-    let executor = req.body.executor;
-    let auxiliar = req.body.auxiliar;
-      
-    var event = new Event({
-        name: name,
-        description: description,
-        time: time,
-        executor: executor,
-        auxiliar: auxiliar,     
+    let idevent = req.body.id;
+    let nameevent = req.body.name;
+
+    var etype = new EventType({
+        id: idevent,
+        name: nameevent,
     });
-    event.save();
-    res.send("Event had been posted \n" + event);
+    etype.save();
+    res.sendStatus(200);
+    res.send("Event had been posted \n" + etype);
 });
 
 //Listar todos los eventos
 router.get('/', (req, res, next) => {
-    Event.find({})
+    EventType.find({})
         .then(events => {
             if (!events) { return res.sendStatus(401); }
             return res.json({ 'events': events })
@@ -40,20 +35,20 @@ router.get('/', (req, res, next) => {
 //Listar un evento
 router.get('/:id', (req, res, next) => {
     let id = req.params.id
-    Event.findById(id)
+    EventType.findById(id)
         .then(event => {
             if (!event) { return res.sendStatus(401); }
             return res.json({ 'event': event })
         })
         .catch(next);
     res.send("get event:" + id);
-   
+
 });
 
 //Modificar evento
 router.put('/:id', (req, res, next) => {
-    
-    Event.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, event) {
+
+    EventType.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, event) {
         if (err)
             res.send(err);
         res.json(event);
@@ -62,12 +57,12 @@ router.put('/:id', (req, res, next) => {
 
 });
 
-//Eliminar evento con su id
+//Eliminar evento.
 router.delete('/:id', (req, res, next) => {
     let id = req.params.id;
-    Event.findByIdAndRemove(id);
+    EventType.findByIdAndRemove(id);
     //res.sendStatus(200);
-    res.send("event deleted :" +id);
+    res.send("event deleted :" + id);
 });
 
 
