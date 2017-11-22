@@ -8,6 +8,7 @@ var ObjectId = mongoose.Types.ObjectId;
 
 //Alta de juegos (partidos) indicando los id de los equipos y la fecha y hora de inicio.
 router.post('/', (req, res, next) => {
+    let id = req.body.id;
     let date = req.body.date;
     let stadium = req.body.stadium;
     let finished = req.body.finished;
@@ -17,6 +18,7 @@ router.post('/', (req, res, next) => {
     let score = req.body.score;
 
     var match = new Match({
+        id:id,
         date: date,
         stadium: stadium,
         finished: finished,
@@ -77,9 +79,11 @@ router.put('/:id', (req, res, next) => {
             res.send(err);
         res.json(match);
     });
-    res.send("put match:" + match);
+    res.status(200);
+    //res.send("put match:" + match);
 
 });
+
 
 //Baja de juego indicando el id del juego.
 

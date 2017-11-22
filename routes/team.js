@@ -47,7 +47,7 @@ router.get('/:id', (req, res, next) => {
 
 //Modificar equipo
 router.put('/:id', (req, res, next) => {
-    Team.findOneAndUpdate({ id: req.params.id }, req.body, { new: true }, function (err, team) {
+    Team.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, team) {
         if (err)
             res.send(err);
         res.json(team);

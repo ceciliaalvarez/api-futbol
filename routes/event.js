@@ -3,25 +3,52 @@
 var mongoose = require('mongoose');
 var router = require('express').Router();
 var Event = mongoose.model('event');
+var Match = mongoose.model('match');
 
 var ObjectId = mongoose.Types.ObjectId;
 
 //Crear un evento de un partido
-router.post('/', (req, res, next) => {
+router.post('/:id', (req, res, next) => {
     let type = req.body.type;
     let description = req.body.description;
     let time = req.body.time;
     let executor = req.body.executor;
     let auxiliar = req.body.auxiliar;
+    var matchaux;
       
     var event = new Event({
-        name: name,
+        type: type,
         description: description,
         time: time,
         executor: executor,
         auxiliar: auxiliar,     
     });
     event.save();
+
+    /*Match.findById(req.params._id).then(match => {
+        if (!match) { return res.sendStatus(401); }
+        matchaux = new Match({
+            id : match.id,
+            _id : match._id,
+            stadium : match.stadium,
+            finished : match.finished,
+            team1 : match.team1,
+            team2 : match.team2,
+            events : match.events,
+            score : match.score
+        });
+    })*/
+
+    //matchaux.events.push(event._id);
+    //matchaux.save();
+    //res.sendStatus(200);
+
+    Match.findOneAndUpdate({ _id: req.params.id }, {events: event}, { new: true }, function (err, match) {
+        if (err)
+            res.send(err);
+        res.json(match);
+    });
+
     res.send("Event had been posted \n" + event);
 });
 
