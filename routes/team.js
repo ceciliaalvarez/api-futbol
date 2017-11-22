@@ -6,19 +6,18 @@ var Team = mongoose.model('team');
 
 //Crear equipo
 router.post('/', (req, res, next) => {
-    let name1 = req.body.name;
-    let stadium1 = req.body.stadium;   
-    let points1 = req.body.points;
+    let nameteam = req.body.name;
+    let stadiumteam = req.body.stadium;
+    let pointsteam = req.body.points;
 
     var team = new Team({
-        name: name1,
-        stadium: stadium1,
-        points: points1,
+        name: nameteam,
+        stadium: stadiumteam,
+        points: pointsteam,
     });
-
     team.save();
     res.sendStatus(200);
-    //res.send("team had been posted \n" + team);
+    res.send("Team had been posted \n" + team);
 });
 
 //Listar todos los equipos
@@ -59,9 +58,13 @@ router.put('/:id', (req, res, next) => {
 
 //Eliminar equipo
 router.delete('/:id', (req, res, next) => {
-    let id = req.params.id;
-    Team.findByIdAndRemove(id);
-    res.status(200).send("delete client:" + id);
+    Team.findByIdAndRemove(req.params.id, (err, team) => {
+        let response = {
+            message: "Team successfully deleted",
+            id: team._id
+        };
+        res.status(200).send(response);
+    });
 });
 
 module.exports = router;

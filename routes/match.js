@@ -82,11 +82,15 @@ router.put('/:id', (req, res, next) => {
 });
 
 //Baja de juego indicando el id del juego.
+
 router.delete('/:id', (req, res, next) => {
-    let id = req.params.id;
-    Match.findByIdAndRemove(id);
-    //res.sendStatus(200);
-    res.send("match deleted :" + id);
+    Match.findByIdAndRemove(req.params.id, (err, match) => {
+        let response = {
+            message: "Match successfully deleted",
+            id: match._id
+        };
+        res.status(200).send(response);
+    });
 });
 
 

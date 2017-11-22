@@ -47,23 +47,24 @@ router.get('/:id', (req, res, next) => {
 
 //Modificar evento
 router.put('/:id', (req, res, next) => {
-
     EventType.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, event) {
         if (err)
             res.send(err);
         res.json(event);
     });
-    res.send("put event:" + event);
-
+        res.status(200);
 });
 
 //Eliminar evento.
-router.delete('/:id', (req, res, next) => {
-    let id = req.params.id;
-    EventType.findByIdAndRemove(id);
-    //res.sendStatus(200);
-    res.send("event deleted :" + id);
-});
 
+router.delete('/:id', (req, res, next) => {
+    EventType.findByIdAndRemove(req.params.id, (err, eventtype) => {
+    let response = {
+        message: "Event type successfully deleted",
+        id: eventtype._id
+    };
+    res.status(200).send(response);
+    });
+});
 
 module.exports = router;

@@ -1,6 +1,7 @@
 var mongoose =require('mongoose');
 
 var matchSchema= new mongoose.Schema({
+  id: {type: Number, required: true, unique: true},
   date: {type: Date, required: true},
   stadium: { type: String, required: true },
   finished: { type: Boolean, required: true },

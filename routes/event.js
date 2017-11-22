@@ -63,12 +63,15 @@ router.put('/:id', (req, res, next) => {
 });
 
 //Eliminar evento con su id
-router.delete('/:id', (req, res, next) => {
-    let id = req.params.id;
-    Event.findByIdAndRemove(id);
-    //res.sendStatus(200);
-    res.send("event deleted :" +id);
-});
 
+router.delete('/:id', (req, res, next) => {
+    Event.findByIdAndRemove(req.params.id, (err, event) => {
+        let response = {
+            message: "Event successfully deleted",
+            id: event._id
+        };
+        res.status(200).send(response);
+    });
+});
 
 module.exports = router;
