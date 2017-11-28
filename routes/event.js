@@ -43,11 +43,7 @@ router.post('/:id', (req, res, next) => {
     //matchaux.save();
     //res.sendStatus(200);
 
-    Match.findOneAndUpdate({ _id: req.params.id }, {events: event}, { new: true }, function (err, match) {
-        if (err)
-            res.send(err);
-        res.json(match);
-    });
+    Match.findOneAndUpdate({ _id: req.params.id }, {$push: {events: event._id}}, { upsert:true });
 
     res.send("Event had been posted \n" + event);
 });
