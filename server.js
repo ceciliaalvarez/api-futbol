@@ -14,6 +14,8 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 
 mongoose.connect('mongodb://localhost:27017/futbol');
+mongoose.set('debug',true);
+
 require('./models/team.js');
 require('./models/match.js');
 require('./models/event.js');

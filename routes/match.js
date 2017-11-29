@@ -43,7 +43,7 @@ router.get('/finished/:finished', (req, res, next) => {
                 return res.json({ 'matches': matches })
             })
             .catch(next);
-        res.send("get matches");
+      //  res.send("get matches");
     }
     else
     {
@@ -53,7 +53,7 @@ router.get('/finished/:finished', (req, res, next) => {
                 return res.json({ 'matches': matches })
             })
             .catch(next);
-        res.send("get active matches");
+       // res.send("get active matches");
     }
     
 });
