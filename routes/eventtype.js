@@ -30,10 +30,7 @@ router.get('/', (req, res, next) => {
             res.json({status: 200, events: events});
         })
         .catch(next);
-    res.send("get event types");
-
-    /*if (err) res.json({status: 500, error: err});
-    res.json({ status: 500, cliente: cliente });*/
+    //res.send("get events");
     //next();
 });
 
@@ -46,7 +43,7 @@ router.get('/:id', (req, res, next) => {
             return res.json({ 'event': event })
         })
         .catch(next);
-    res.send("get event:" + id);
+    //res.send("get event:" + id);
 
 });
 

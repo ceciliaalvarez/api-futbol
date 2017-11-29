@@ -28,7 +28,7 @@ router.get('/', (req, res, next) => {
             return res.json({ 'teams': teams })
         })
         .catch(next);
-        res.send("get teams");
+        //res.send("get teams");
    
 });
 
@@ -41,7 +41,7 @@ router.get('/:id', (req, res, next) => {
             return res.json({ 'team': team })
         })
       
-        res.send("get team" + id);
+        //res.send("get team" + id);
           //.catch(next);
 });
 
