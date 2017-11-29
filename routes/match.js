@@ -33,9 +33,9 @@ router.post('/', (req, res, next) => {
 
 //Consulta de juegos.
 //Consulta de juegos activos(no finalizados).
-router.get('/?finished', (req, res, next) => {
+router.get('/finished/:finished', (req, res, next) => {
     let fin = req.params.finished;
-    if(fin===null)
+    if(fin==="true")
     {
         Match.find({})
             .then(matches => {

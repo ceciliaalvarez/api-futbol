@@ -23,29 +23,19 @@ router.post('/:id', (req, res, next) => {
         executor: executor,
         auxiliar: auxiliar,     
     });
-    event.save();
 
-    /*Match.findById(req.params._id).then(match => {
-        if (!match) { return res.sendStatus(401); }
-        matchaux = new Match({
-            id : match.id,
-            _id : match._id,
-            stadium : match.stadium,
-            finished : match.finished,
-            team1 : match.team1,
-            team2 : match.team2,
-            events : match.events,
-            score : match.score
-        });
-    })*/
-
-    //matchaux.events.push(event._id);
-    //matchaux.save();
-    //res.sendStatus(200);
-
-    Match.findOneAndUpdate({ _id: req.params.id }, {$push: {events: event._id}}, { upsert:true });
-
-    res.send("Event had been posted \n" + event);
+    event.save(err => {
+            console.log(event._id);
+            if(err) {return res.sendStatus(401); }
+            Match.findById(req.params.id).then(match=>{
+                let evs=match.events;
+                evs.push(event._id);
+                match.events=evs;
+                console.log(match);
+                match.save();
+            });
+        res.send("Event had been posted \n" + event);
+    });
 });
 
 //Listar todos los eventos
