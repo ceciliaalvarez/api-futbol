@@ -46,7 +46,7 @@ router.get('/', (req, res, next) => {
             return res.json({ 'events': events })
         })
         .catch(next);
-    res.send("get events");
+    //res.send("get events");
     //next();
 });
 
@@ -59,7 +59,7 @@ router.get('/:id', (req, res, next) => {
             return res.json({ 'event': event })
         })
         .catch(next);
-    res.send("get event:" + id);
+    //res.send("get event:" + id);
    
 });
 

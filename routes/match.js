@@ -41,9 +41,11 @@ router.get('/finished/:finished', (req, res, next) => {
             .then(matches => {
                 if (!matches) { return res.sendStatus(401); }
                 return res.json({ 'matches': matches })
+                //return res.send.json(matches)
+                //return res.send(JSON.parse(JSON.stringify(matches)))
             })
             .catch(next);
-        res.send("get matches");
+        //res.send("get matches");
     }
     else
     {
@@ -51,9 +53,11 @@ router.get('/finished/:finished', (req, res, next) => {
             .then(matches => {
                 if (!matches) { return res.sendStatus(401); }
                 return res.json({ 'matches': matches })
+                //return res.send.json(matches)
+                //return res.send(JSON.parse(JSON.stringify(matches)))
             })
             .catch(next);
-        res.send("get active matches");
+        //res.send("get active matches");
     }
     
 });
@@ -67,7 +71,7 @@ router.get('/:id', (req, res, next) => {
             return res.json({ 'match': match })
         })
         .catch(next);
-    res.send("get match:" + id);
+    //res.send("get match:" + id);
 
 });
 
