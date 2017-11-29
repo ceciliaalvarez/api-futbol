@@ -3,6 +3,9 @@
 var mongoose = require('mongoose');
 var router = require('express').Router();
 var Match = mongoose.model('match');
+var Team = mongoose.model('team');
+var Event = mongoose.model('event');
+var Eventtype = mongoose.model('eventtype');
 
 var ObjectId = mongoose.Types.ObjectId;
 
@@ -38,26 +41,24 @@ router.get('/finished/:finished', (req, res, next) => {
     if(fin==="true")
     {
         Match.find({})
-            .then(matches => {
-                if (!matches) { return res.sendStatus(401); }
-                return res.json({ 'matches': matches })
-                //return res.send.json(matches)
-                //return res.send(JSON.parse(JSON.stringify(matches)))
-            })
-            .catch(next);
-        //res.send("get matches");
+            .populate( 'team1' )
+            .populate( 'team2' )
+            .populate('events')
+                .exec(function (err, matches) {
+                    return res.json({ 'matches': matches })
+                })                
+        .catch(next);
     }
     else
     {
-        Match.find({ finished:false })
-            .then(matches => {
-                if (!matches) { return res.sendStatus(401); }
+        Match.find({ finished: false })
+            .populate('team1')
+            .populate('team2')
+            .populate('events')
+            .exec(function (err, matches) {
                 return res.json({ 'matches': matches })
-                //return res.send.json(matches)
-                //return res.send(JSON.parse(JSON.stringify(matches)))
             })
             .catch(next);
-        //res.send("get active matches");
     }
     
 });
@@ -66,9 +67,12 @@ router.get('/finished/:finished', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
     let id = req.params.id
     Match.findById(id)
-        .then(match => {
-            if (!match) { return res.sendStatus(401); }
-            return res.json({ 'match': match })
+        .populate('team1')
+        .populate('team2')
+        .populate('events')
+        .exec(function (err, matches) {
+            console.log(matches);
+            return res.json({ 'matches': matches })
         })
         .catch(next);
     //res.send("get match:" + id);

@@ -1,4 +1,6 @@
 var mongoose =require('mongoose');
+var Team = mongoose.model('team');
+//var Event = mongoose.model('event');
 
 var matchSchema= new mongoose.Schema({
   id: {type: Number, required: true, unique: true},
