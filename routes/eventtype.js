@@ -24,8 +24,10 @@ router.post('/', (req, res, next) => {
 router.get('/', (req, res, next) => {
     EventType.find({})
         .then(events => {
-            if (!events) { return res.sendStatus(401); }
-            return res.json({ 'events': events })
+            //if (!events) { return res.sendStatus(401); }
+            if(!events) res.json({status: 500});
+            //return res.json({ 'events': events })
+            res.json({status: 200, events: events});
         })
         .catch(next);
     //res.send("get events");

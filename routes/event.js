@@ -38,14 +38,24 @@ router.post('/:id', (req, res, next) => {
     });
 });
 
+
+
 //Listar todos los eventos
 router.get('/', (req, res, next) => {
     Event.find({})
-        .then(events => {
-            if (!events) { return res.sendStatus(401); }
+        .populate('type')
+        .populate('executor')
+        .populate('auxiliar')
+        .exec(function (err, events) {
+            console.log(events);
             return res.json({ 'events': events })
         })
         .catch(next);
+        /*.then(events => {
+            if (!events) { return res.sendStatus(401); }
+            return res.json({ 'events': events })
+        })
+        .catch(next);*/
     //res.send("get events");
     //next();
 });
@@ -54,11 +64,19 @@ router.get('/', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
     let id = req.params.id
     Event.findById(id)
-        .then(event => {
-            if (!event) { return res.sendStatus(401); }
+        .populate('type')
+        .populate('executor')
+        .populate('auxiliar')
+        .exec(function (err, event) {
+            console.log(event);
             return res.json({ 'event': event })
         })
         .catch(next);
+        /*.then(event => {
+            if (!event) { return res.sendStatus(401); }
+            return res.json({ 'event': event })
+        })
+        .catch(next);*/
     //res.send("get event:" + id);
    
 });

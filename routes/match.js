@@ -43,7 +43,7 @@ router.get('/finished/:finished', (req, res, next) => {
         Match.find({})
             .populate( 'team1' )
             .populate( 'team2' )
-            .populate('events')
+            .populate({path:'events', populate:{path:'type'}})
                 .exec(function (err, matches) {
                     return res.json({ 'matches': matches })
                 })                
@@ -54,7 +54,7 @@ router.get('/finished/:finished', (req, res, next) => {
         Match.find({ finished: false })
             .populate('team1')
             .populate('team2')
-            .populate('events')
+            .populate({ path: 'events', populate: { path: 'type' } })
             .exec(function (err, matches) {
                 return res.json({ 'matches': matches })
             })
@@ -69,7 +69,7 @@ router.get('/:id', (req, res, next) => {
     Match.findById(id)
         .populate('team1')
         .populate('team2')
-        .populate('events')
+        .populate({ path: 'events', populate: { path: 'type' } })
         .exec(function (err, matches) {
             console.log(matches);
             return res.json({ 'matches': matches })

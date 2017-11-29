@@ -16,7 +16,7 @@ router.post('/', (req, res, next) => {
         points: pointsteam,
     });
     team.save();
-    res.sendStatus(200);
+    //res.sStatus(200);
     res.send("Team had been posted \n" + team);
 });
 
